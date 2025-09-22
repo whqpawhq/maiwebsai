@@ -5,71 +5,77 @@
   <title>Chatbot GPT</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      padding: 20px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    h2 {
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      overflow: hidden;
+    }
+    .header {
       text-align: center;
-      color: #333;
-      margin-bottom: 15px;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+      background: #0078ff;
+      color: white;
     }
     #chat {
-      max-width: 500px;
-      margin: auto;
-      border: 1px solid #ddd;
-      background: #fff;
-      padding: 10px;
-      height: 400px;
+      flex: 1;
+      padding: 15px;
       overflow-y: auto;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .msg {
       margin: 8px 0;
-      padding: 8px 12px;
-      border-radius: 16px;
-      display: inline-block;
-      max-width: 70%;
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 12px;
       line-height: 1.4;
+      word-wrap: break-word;
     }
     .user {
-      text-align: right;
-      color: #fff;
       background: #0078ff;
-      float: right;
-      clear: both;
+      color: white;
+      margin-left: auto;
       border-bottom-right-radius: 4px;
     }
     .bot {
-      text-align: left;
+      background: #f1f1f1;
       color: #333;
-      background: #eaeaea;
-      float: left;
-      clear: both;
+      margin-right: auto;
       border-bottom-left-radius: 4px;
     }
-    #inputArea {
-      max-width: 500px;
-      margin: 15px auto 0;
+    .input-area {
       display: flex;
-      gap: 8px;
+      border-top: 1px solid #eee;
     }
-    #inputBox {
+    #message {
       flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      padding: 12px;
+      border: none;
+      outline: none;
       font-size: 14px;
     }
     #sendBtn {
-      padding: 0 20px;
-      border: none;
       background: #0078ff;
-      color: #fff;
-      border-radius: 6px;
+      color: white;
+      border: none;
+      padding: 0 20px;
       cursor: pointer;
-      transition: 0.2s;
+      font-size: 14px;
     }
     #sendBtn:hover {
       background: #005fcc;
@@ -77,32 +83,35 @@
   </style>
 </head>
 <body>
-  <h2>Limited | ChatSex with me</h2>
-  <div id="chat"></div>
-  <div id="inputArea">
-    <input type="text" id="inputBox" placeholder="Nhập tin nhắn..." />
-    <button id="sendBtn">Gửi</button>
+  <div class="container">
+    <div class="header">Chatbot GPT</div>
+    <div id="chat"></div>
+    <div class="input-area">
+      <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+      <button id="sendBtn">Gửi</button>
+    </div>
   </div>
 
   <script>
     const chat = document.getElementById("chat");
-    const inputBox = document.getElementById("inputBox");
+    const inputBox = document.getElementById("message");
     const sendBtn = document.getElementById("sendBtn");
 
-    function addMsg(text, sender) {
+    function addMessage(sender, text) {
       const div = document.createElement("div");
-      div.className = "msg " + sender;
+      div.className = "msg " + (sender === "Bạn" ? "user" : "bot");
       div.textContent = text;
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
     }
 
-    async function sendMsg() {
-      const msg = inputBox.value.trim();
-      if (!msg) return;
-      addMsg(msg, "user");
+    async function sendMessage() {
+      const userMessage = inputBox.value.trim();
+      if (!userMessage) return;
+      addMessage("Bạn", userMessage);
       inputBox.value = "";
 
+      // loading
       const loading = document.createElement("div");
       loading.className = "msg bot";
       loading.textContent = "Đang trả lời...";
@@ -113,18 +122,28 @@
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: msg })
+          body: JSON.stringify({ message: userMessage })
         });
+
         const data = await res.json();
-        loading.textContent = data.reply;
-      } catch {
-        loading.textContent = "Con mẹ mày đợi tí đi";
+        console.log("📥 Server trả về:", data);
+
+        chat.removeChild(loading);
+
+        if (data.error) {
+          addMessage("Bot", "❌ Lỗi: " + data.error);
+        } else {
+          addMessage("Bot", data.reply || "⚠️ Bot không trả lời gì cả");
+        }
+      } catch (err) {
+        chat.removeChild(loading);
+        addMessage("Bot", "❌ Lỗi kết nối: " + err.message);
       }
     }
 
-    sendBtn.onclick = sendMsg;
+    sendBtn.onclick = sendMessage;
     inputBox.addEventListener("keypress", e => {
-      if (e.key === "Enter") sendMsg();
+      if (e.key === "Enter") sendMessage();
     });
   </script>
 </body>
