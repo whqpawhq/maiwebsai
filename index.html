@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<title>Terminal + Commands</title>
+<style>
+  :root { --white: #ffffff; --muted: rgba(255,255,255,0.08); --text: #ffffff; }
+  * { box-sizing: border-box; }
+  html,body { height: 100%; margin: 0; background: #000; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, monospace;
+    color: var(--text);
+    padding: 12px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+  }
+  #terminal {
+    width: 100%;
+    max-width: 1100px;
+    height: calc(100vh - 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+  .output {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .line {
+    font-family: monospace;
+    font-size: 16px;
+    line-height: 1.35;
+    white-space: pre-wrap;
+    margin: 0 0 6px 0;
+    color: var(--text);
+  }
+  .muted { color: rgba(255,255,255,0.35); }
+  .inputBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 6px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .prompt { font-family: monospace; min-width: 28px; }
+  #commandInput {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: monospace;
+    font-size: 16px;
+    width: 100%;
+    caret-color: var(--text);
+  }
+  .fakeCaret {
+    width: 10px; height: 18px;
+    background: var(--text);
+    margin-left: 6px;
+    animation: blink 1s steps(1) infinite;
+    opacity: 0.9;
+  }
+  @keyframes blink { 50% { opacity: 0.15; } }
+  .scanline {
+    position: fixed; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 1px,
+      rgba(255,255,255,0.02) 1px,
+      rgba(255,255,255,0.02) 2px
+    );
+    mix-blend-mode: overlay;
+    z-index: 2;
+    opacity: 0.6;
+  }
+  #centerClock {
+    position: fixed;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 96px;
+    color: var(--muted);
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    opacity: 0.08;
+  }
+  @media (max-width: 700px) {
+    #centerClock { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+  <div id="terminal">
+    <div class="output" id="output"></div>
+    <div class="inputBar">
+      <div class="prompt">&gt;</div>
+      <input id="commandInput" autocomplete="off" placeholder="Nhập lệnh..." />
+      <div class="fakeCaret"></div>
+    </div>
+  </div>
+  <div id="centerClock"></div>
+  <div class="scanline"></div>
+
+<script>
+const FILES = ["file1.zip","file2.html","file3.txt","all_files.zip"];
+const TYPING_SPEED = 16;
+const output = document.getElementById("output");
+const input = document.getElementById("commandInput");
+const centerClock = document.getElementById("centerClock");
+
+function scrollToBottom(){ output.scrollTop = output.scrollHeight; }
+function nowStamp(){
+  const d = new Date();
+  return `[${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}]`;
+}
+function updateCenterClock(){
+  const d = new Date();
+  centerClock.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+}
+setInterval(updateCenterClock,1000); updateCenterClock();
+
+function pushPlain(text,cls=''){ 
+  const el=document.createElement('div'); 
+  el.className='line '+cls; el.textContent=text; 
+  output.appendChild(el); scrollToBottom();
+}
+function pushType(text,cls=''){ 
+  return new Promise(res=>{
+    const el=document.createElement('div'); el.className='line '+cls; output.appendChild(el);
+    let i=0; (function tick(){ 
+      if(i<text.length){ el.textContent+=text.charAt(i++); scrollToBottom(); setTimeout(tick,TYPING_SPEED);}
+      else res();
+    })();
+  });
+}
+function echoCommand(cmd){ pushPlain(`${nowStamp()} > ${cmd}`); }
+async function log(text){ await pushType(`${nowStamp()} ${text}`); }
+
+pushPlain(`${nowStamp()} -Vui lệnh nhập lòng để động lòng hệ thống`,'muted');
+
+let started=false;
+input.addEventListener('keydown',async e=>{
+  if(e.key==='Enter'){
+    const raw=input.value.trim(); if(!raw)return;
+    echoCommand(raw); input.value='';
+    const parts=raw.split(/\s+/); const cmd=parts[0].toLowerCase();
+    if(!started){
+      if(cmd==='start'){ started=true; await bootSequence(); }
+      else await log("System offline. Type 'start' to initialize.");
+    } else {
+      if(cmd==='download'){
+        const fn=parts[1]; 
+        if(!fn) await log("Usage: download <filename>");
+        else if(FILES.includes(fn)){
+          const a=document.createElement('a'); a.href=fn; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
+          await log("Downloading "+fn+" ..."); await log("Download complete: "+fn);
+        } else { await log("File not found: "+fn); }
+      }
+      else if(cmd==='ls'){ await log("Files: "+FILES.join(", ")); }
+      else if(cmd==='help'){
+        await log("Cac lenh co san: start, download <file>, ls, help, clear, whoami, scan, reboot");
+      }
+      else if(cmd==='clear'){ output.innerHTML=''; }
+      else if(cmd==='whoami'){ await log("owyt ngau du vay troi"); }
+      else if(cmd==='scan'){
+        await log("Bo may dang check doi ti"); 
+        await new Promise(r=>setTimeout(r,1000));
+        await log("Check xong roi nha thang lon");
+        await new Promise(r=>setTimeout(r,1000));
+        await log("may ngu vcl.");
+      }
+      else if(cmd==='reboot'){ output.innerHTML=''; await bootSequence(); }
+      else { await log("Lenh nay eo ton tai: "+cmd+" | Su dung help de duoc cuu nhe"); }
+    }
+  }
+});
+
+async function bootSequence(){
+  const msgs=["System initializing...","Loading kernel modules...","Mounting virtual storage...","Decrypting index...","Secure channel established.","Tai lieu hoc tap cua thay tokuda. su dung lenh: download filename"];
+  for(let m of msgs){ await log(m); await new Promise(r=>setTimeout(r,420)); }
+  await log("Available files: "+FILES.join(", "));
+}
+</script>
+</body>
+</html>
