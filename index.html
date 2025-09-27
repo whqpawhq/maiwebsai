@@ -150,7 +150,7 @@ input.addEventListener('keydown',async e=>{
     const parts=raw.split(/\s+/); const cmd=parts[0].toLowerCase();
     if(!started){
       if(cmd==='start'){ started=true; await bootSequence(); }
-      else await log("System offline. Type 'start' to initialize.");
+      else await log("He thong of line.-.");
     } else {
       if(cmd==='download'){
         const fn=parts[1]; 
@@ -165,13 +165,13 @@ input.addEventListener('keydown',async e=>{
         await log("Cac lenh co san: start, download <file>, ls, help, clear, whoami, scan, reboot");
       }
       else if(cmd==='clear'){ output.innerHTML=''; }
-      else if(cmd==='whoami'){ await log("owyt ngau du vay troi"); }
+      else if(cmd==='whoami'){ await log("8a9 skibidi tung tung sahur tra la le tra lala"); }
       else if(cmd==='scan'){
-        await log("Bo may dang check doi ti"); 
+        await log("- dang check doi ti"); 
         await new Promise(r=>setTimeout(r,1000));
-        await log("Check xong roi nha thang lon");
+        await log("website: https://maiwebsai.vercel.com/ - Host: Vercel.com - Github:https://github.com/whqpawhq/maiwebsa/ - minh & ChatGPT develoer");
         await new Promise(r=>setTimeout(r,1000));
-        await log("may ngu vcl.");
+        await log("(⁠〃ﾟ⁠3ﾟ⁠〃⁠)");
       }
       else if(cmd==='reboot'){ output.innerHTML=''; await bootSequence(); }
       else { await log("Lenh nay eo ton tai: "+cmd+" | Su dung help de duoc cuu nhe"); }
