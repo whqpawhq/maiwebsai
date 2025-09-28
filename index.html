@@ -2,18 +2,67 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8" />
-<title>Terminal + Commands</title>
+<title>Khong Thich Thi Sao. Thi Phai Chiuuu•́⁠︿⁠•̀</title>
 <style>
   :root { --white: #ffffff; --muted: rgba(255,255,255,0.08); --text: #ffffff; }
-  * { box-sizing: border-box; }
-  html,body { height: 100%; margin: 0; background: #000; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html,body { height: 100%; background: transparent; overflow: hidden; }
+
+  /* ==== STAR BACKGROUND ==== */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    z-index: -3;
+  }
+  #stars, #stars2, #stars3 {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: block;
+    z-index: -2;
+  }
+
+  #stars {
+    width: 1px; height: 1px; background: transparent;
+    box-shadow:
+      123px 543px #fff, 543px 234px #fff, 999px 345px #fff,
+      50px 800px #fff, 700px 200px #fff, 1200px 300px #fff,
+      1500px 1200px #fff, 300px 1700px #fff, 800px 1600px #fff,
+      100px 1300px #fff, 1700px 500px #fff, 1900px 1400px #fff;
+    animation: animStar 50s linear infinite;
+  }
+  #stars:after { content: " "; position: absolute; top: 2000px; width: 1px; height: 1px; box-shadow: inherit; }
+
+  #stars2 {
+    width: 2px; height: 2px; background: transparent;
+    box-shadow:
+      400px 300px #fff, 600px 1000px #fff, 1000px 700px #fff,
+      200px 1500px #fff, 800px 1200px #fff, 1400px 500px #fff,
+      1600px 800px #fff, 1800px 1000px #fff, 300px 400px #fff;
+    animation: animStar 100s linear infinite;
+  }
+  #stars2:after { content: " "; position: absolute; top: 2000px; width: 2px; height: 2px; box-shadow: inherit; }
+
+  #stars3 {
+    width: 3px; height: 3px; background: transparent;
+    box-shadow:
+      300px 600px #fff, 900px 1400px #fff, 1500px 1000px #fff,
+      400px 1600px #fff, 1000px 400px #fff, 1600px 800px #fff,
+      1900px 1200px #fff, 1200px 1500px #fff, 700px 1800px #fff;
+    animation: animStar 150s linear infinite;
+  }
+  #stars3:after { content: " "; position: absolute; top: 2000px; width: 3px; height: 3px; box-shadow: inherit; }
+
+  @keyframes animStar { from { transform: translateY(0px); } to { transform: translateY(-2000px); } }
+
+  /* ==== TERMINAL ==== */
   body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, monospace;
     color: var(--text);
-    padding: 12px;
     display: flex;
     align-items: stretch;
     justify-content: center;
+    padding: 10px;
   }
   #terminal {
     width: 100%;
@@ -21,79 +70,34 @@
     height: calc(100vh - 24px);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     position: relative;
-  }
-  .output {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding-right: 6px;
-  }
-  .line {
-    font-family: monospace;
-    font-size: 16px;
-    line-height: 1.35;
-    white-space: pre-wrap;
-    margin: 0 0 6px 0;
-    color: var(--text);
-  }
-  .muted { color: rgba(255,255,255,0.35); }
-  .inputBar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 6px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-  }
-  .prompt { font-family: monospace; min-width: 28px; }
-  #commandInput {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-family: monospace;
-    font-size: 16px;
-    width: 100%;
-    caret-color: var(--text);
-  }
-  .fakeCaret {
-    width: 10px; height: 18px;
-    background: var(--text);
-    margin-left: 6px;
-    animation: blink 1s steps(1) infinite;
-    opacity: 0.9;
-  }
-  @keyframes blink { 50% { opacity: 0.15; } }
-  .scanline {
-    position: fixed; inset: 0; pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(0,0,0,0) 0px,
-      rgba(0,0,0,0) 1px,
-      rgba(255,255,255,0.02) 1px,
-      rgba(255,255,255,0.02) 2px
-    );
-    mix-blend-mode: overlay;
-    z-index: 2;
-    opacity: 0.6;
-  }
-  #centerClock {
-    position: fixed;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 96px;
-    color: var(--muted);
-    pointer-events: none;
-    user-select: none;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
     z-index: 1;
-    opacity: 0.08;
   }
-  @media (max-width: 700px) {
-    #centerClock { font-size: 56px; }
-  }
+  .output { flex: 1 1 auto; overflow-y: auto; padding: 10px; }
+  .line { font-family: monospace; font-size: 16px; line-height: 1.35; white-space: pre-wrap; margin-bottom: 6px; color: var(--text); }
+  .muted { color: rgba(255,255,255,0.35); }
+  .inputBar { display: flex; align-items: center; gap: 8px; padding: 8px 6px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .prompt { font-family: monospace; min-width: 28px; }
+  #commandInput { background: transparent; border: none; outline: none; color: var(--text); font-family: monospace; font-size: 16px; width: 100%; caret-color: var(--text); }
+  .fakeCaret { width: 10px; height: 18px; background: var(--text); margin-left: 6px; animation: blink 1s steps(1) infinite; opacity: 0.9; }
+  @keyframes blink { 50% { opacity: 0.15; } }
+  .scanline { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 1px, rgba(255,255,255,0.02) 1px, rgba(255,255,255,0.02) 2px); mix-blend-mode: overlay; z-index: 2; opacity: 0.6; }
+  #centerClock { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 80px; color: var(--muted); pointer-events: none; user-select: none; z-index: 0; opacity: 0.08; }
+  @media (max-width: 700px) { #centerClock { font-size: 50px; } }
 </style>
 </head>
 <body>
+  <!-- Star layers -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+
+  <!-- Terminal -->
   <div id="terminal">
     <div class="output" id="output"></div>
     <div class="inputBar">
@@ -102,45 +106,31 @@
       <div class="fakeCaret"></div>
     </div>
   </div>
+
   <div id="centerClock"></div>
   <div class="scanline"></div>
 
+  <!-- Music Background -->
+  <audio id="vioAudio" src="music.mp3" autoplay loop></audio>
+
 <script>
-const FILES = ["file1.zip","file2.html","file3.txt","all_files.zip"];
-const TYPING_SPEED = 16;
+const FILES = ["index.html"];
+const TYPING_SPEED = 20;
 const output = document.getElementById("output");
 const input = document.getElementById("commandInput");
 const centerClock = document.getElementById("centerClock");
 
 function scrollToBottom(){ output.scrollTop = output.scrollHeight; }
-function nowStamp(){
-  const d = new Date();
-  return `[${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}]`;
-}
-function updateCenterClock(){
-  const d = new Date();
-  centerClock.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-}
+function nowStamp(){ const d = new Date(); return `[${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}]`; }
+function updateCenterClock(){ const d = new Date(); centerClock.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`; }
 setInterval(updateCenterClock,1000); updateCenterClock();
 
-function pushPlain(text,cls=''){ 
-  const el=document.createElement('div'); 
-  el.className='line '+cls; el.textContent=text; 
-  output.appendChild(el); scrollToBottom();
-}
-function pushType(text,cls=''){ 
-  return new Promise(res=>{
-    const el=document.createElement('div'); el.className='line '+cls; output.appendChild(el);
-    let i=0; (function tick(){ 
-      if(i<text.length){ el.textContent+=text.charAt(i++); scrollToBottom(); setTimeout(tick,TYPING_SPEED);}
-      else res();
-    })();
-  });
-}
+function pushPlain(text,cls=''){ const el=document.createElement('div'); el.className='line '+cls; el.textContent=text; output.appendChild(el); scrollToBottom(); }
+function pushType(text,cls=''){ return new Promise(res=>{ const el=document.createElement('div'); el.className='line '+cls; output.appendChild(el); let i=0; (function tick(){ if(i<text.length){ el.textContent+=text.charAt(i++); scrollToBottom(); setTimeout(tick,TYPING_SPEED);} else res(); })(); }); }
 function echoCommand(cmd){ pushPlain(`${nowStamp()} > ${cmd}`); }
 async function log(text){ await pushType(`${nowStamp()} ${text}`); }
 
-pushPlain(`${nowStamp()} -Vui lệnh nhập lòng để động lòng hệ thống`,'muted');
+pushPlain(`${nowStamp()} -Vui lòng nhập lệnh để hệ thống hoạt động |`,'muted');
 
 let started=false;
 input.addEventListener('keydown',async e=>{
@@ -150,39 +140,40 @@ input.addEventListener('keydown',async e=>{
     const parts=raw.split(/\s+/); const cmd=parts[0].toLowerCase();
     if(!started){
       if(cmd==='start'){ started=true; await bootSequence(); }
-      else await log("He thong of line.-.");
+      else await log("Hệ thống đang ngoại tuyến | (⁠｡⁠ŏ⁠﹏⁠ŏ⁠)");
     } else {
-      if(cmd==='download'){
-        const fn=parts[1]; 
-        if(!fn) await log("Usage: download <filename>");
-        else if(FILES.includes(fn)){
-          const a=document.createElement('a'); a.href=fn; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
-          await log("Downloading "+fn+" ..."); await log("Download complete: "+fn);
-        } else { await log("File not found: "+fn); }
+      switch(cmd){
+        case 'download': {
+          const fn=parts[1]; 
+          if(!fn) await log("Usage: download <filename>");
+          else if(FILES.includes(fn)){
+            const a=document.createElement('a'); a.href=fn; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
+            await log("Downloading "+fn+" ..."); await log("Download complete: "+fn);
+          } else { await log("File not found: "+fn); }
+          break;
+        }
+        case 'ls': await log("Files: "+FILES.join(", ")); break;
+        case 'help': await log("Các lệnh có sẵn: download <file> / 8a9 / clear / info / reboot | "); break;
+        case 'clear': output.innerHTML=''; break;
+        case '8a9': await log("8a9 skibidi tung tung sahur tra la le tra lala @a9cutequaa_ / https://www.tiktok.com/@a9cuteqaa_?_t=ZS-906AaoZnGIG&_r=1 |"); break;
+        case 'info': 
+          await log("/Loading/"); 
+          await new Promise(r=>setTimeout(r,1000));
+          await log("Website: https://maiwebsai.vercel.com/ - Host: Vercel.com - Github:https://github.com/whqpawhq/maiwebsa/ - minh & ChatGPT de ve lop pơ |");
+          await new Promise(r=>setTimeout(r,2000));
+          await log("(⁠〃ﾟ⁠3ﾟ⁠〃⁠)");
+          break;
+        case 'reboot': output.innerHTML=''; await bootSequence(); break;
+        default: await log("Lệnh không hợp lệ: "+cmd+" | Dùng help để xem |");
       }
-      else if(cmd==='ls'){ await log("Files: "+FILES.join(", ")); }
-      else if(cmd==='help'){
-        await log("Cac lenh co san: start, download <file>, ls, help, clear, whoami, scan, reboot");
-      }
-      else if(cmd==='clear'){ output.innerHTML=''; }
-      else if(cmd==='whoami'){ await log("8a9 skibidi tung tung sahur tra la le tra lala / https://www.tiktok.com/@a9cuteqaa_?_t=ZS-904C21P6Rai&_r=1"); }
-      else if(cmd==='scan'){
-        await log("- dang check doi ti"); 
-        await new Promise(r=>setTimeout(r,1000));
-        await log("website: https://maiwebsai.vercel.com/ - Host: Vercel.com - Github:https://github.com/whqpawhq/maiwebsa/ - minh & ChatGPT de ve lop pơ");
-        await new Promise(r=>setTimeout(r,1000));
-        await log("(⁠〃ﾟ⁠3ﾟ⁠〃⁠)");
-      }
-      else if(cmd==='reboot'){ output.innerHTML=''; await bootSequence(); }
-      else { await log("Lenh nay eo ton tai: "+cmd+" | Su dung help de duoc cuu nhe"); }
     }
   }
 });
 
 async function bootSequence(){
-  const msgs=["He thong dang ay ay ","dang tai lenh dieu khien","sjejkwkwwmsnndnfhf","load index.html","sjsjsjsjsnsnsnsn.","Tai lieu hoc tap . su dung lenh: download filename"];
-  for(let m of msgs){ await log(m); await new Promise(r=>setTimeout(r,420)); }
-  await log("Available files: "+FILES.join(", "));
+  const msgs=["Loading Website |","Loading Commands |","Loading Index.html |","(⁠*⁠＾⁠3⁠＾⁠)⁠/⁠～⁠♡ |","_____________________","Command: Download <file> |"];
+  for(let m of msgs){ await log(m); await new Promise(r=>setTimeout(r, 500)); }
+  await log("Các tệp khả dụng: "+FILES.join(", "));
 }
 </script>
 </body>
