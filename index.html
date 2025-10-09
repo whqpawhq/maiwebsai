@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8" />
-<title>Lay cay kim may do roi khau cai tui bay trai tim anh bo vo(⁠≧⁠▽⁠≦⁠)</title>
+<title>T la t d m  chung m </title>
 <style>
   :root { --white: #ffffff; --muted: rgba(255,255,255,0.08); --text: #ffffff; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,7 +114,7 @@
   <audio id="vioAudio" src="music.mp3" autoplay loop></audio>
 
 <script>
-const FILES = ["index.html"];
+const FILES = ["index.html,1.zip,2.zip,3.zip"];
 const TYPING_SPEED = 20;
 const output = document.getElementById("output");
 const input = document.getElementById("commandInput");
@@ -130,7 +130,7 @@ function pushType(text,cls=''){ return new Promise(res=>{ const el=document.crea
 function echoCommand(cmd){ pushPlain(`${nowStamp()} > ${cmd}`); }
 async function log(text){ await pushType(`${nowStamp()} ${text}`); }
 
-pushPlain(`${nowStamp()} -Vui lòng nhập lệnh để hệ thống hoạt động |`,'muted');
+pushPlain(`${nowStamp()} Owyt / inhwqu /  |`,'muted');
 
 let started=false;
 input.addEventListener('keydown',async e=>{
@@ -155,11 +155,11 @@ input.addEventListener('keydown',async e=>{
         case 'ls': await log("Files: "+FILES.join(", ")); break;
         case 'help': await log("Các lệnh có sẵn: download <file> / 8a9 / clear / info / reboot | "); break;
         case 'clear': output.innerHTML=''; break;
-        case '8a9': await log("8a9 skibidi tung tung sahur tra la le tra lala @a9cutequaa_ / https://www.tiktok.com/@a9cuteqaa_?_t=ZS-906AaoZnGIG&_r=1 |"); break;
+        case '8a9': await log("8a9 @a9cutequaa_ / https://www.tiktok.com/@a9cuteqaa_?_t=ZS-906AaoZnGIG&_r=1 |"); break;
         case 'info': 
           await log("/Loading/"); 
           await new Promise(r=>setTimeout(r,1000));
-          await log("Website: https://maiwebsai.vercel.com/ - Host: Vercel.com - Github:https://github.com/whqpawhq/maiwebsa/ - minh & ChatGPT de ve lop pơ |");
+          await log("Website: https://maiwebsai.vercel.com/ - Host: Vercel.com - Github:https://github.com/whqpawhq/maiwebsa/ - Me may|");
           await new Promise(r=>setTimeout(r,2000));
           await log("(⁠〃ﾟ⁠3ﾟ⁠〃⁠)");
           break;
